@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleniCaCare - Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        .coming-soon {
+            font-size: 2.5rem;
+            color: #2c5aa0;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+        
+        .contact {
+            color: #495057;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .coming-soon {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                max-width: 300px;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+            <!-- Medical Cross -->
+            <rect x="400" y="250" width="60" height="180" fill="#2c5aa0"/>
+            <rect x="330" y="320" width="200" height="60" fill="#2c5aa0"/>
+            
+            <!-- Leaf -->
+            <path d="M 530 320 Q 580 280 620 320 Q 580 380 530 360 Q 520 340 530 320" fill="#7cb342"/>
+            <path d="M 535 330 Q 570 310 590 340" stroke="white" stroke-width="3" fill="none"/>
+            
+            <!-- Main Text -->
+            <text x="500" y="520" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#2c5aa0" text-anchor="middle">CLENICACARE</text>
+            
+            <!-- Subtitle -->
+            <text x="500" y="580" font-family="Arial, sans-serif" font-size="32" fill="#2c5aa0" text-anchor="middle">CLEAN. PURE. TRUSTED.</text>
+        </svg>
+    </div>
+    
+    <h1 class="coming-soon">Coming Soon</h1>
+    <p class="subtitle">We're working hard to bring you something amazing. Stay tuned for updates on our healthcare services.</p>
+    <p class="contact">For inquiries, please contact us at info@clenicacare.com</p>
+</body>
+</html>
