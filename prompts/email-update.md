@@ -1,0 +1,297 @@
+**Codex Prompt: Create Contact Form with Resend Integration for Clenica Care**
+
+You are a senior full-stack engineer helping me add a production-ready **contact form** to my site.
+
+## 1. Tech stack & project context
+
+- The site is deployed on **Vercel**.
+- It uses **Next.js (App Router)** with **TypeScript**.
+- Emails must be sent via **Resend** using an API key stored in environment variables.
+- Domain: `clenicacare.com`
+- Public "from" identity: `dave@clenicacare.com`
+- All content and messaging should use **UK English**.
+
+Assume the standard Next.js 13/14 App Router layout:
+
+- `app/` directory
+- `app/page.tsx` etc.
+- TypeScript throughout
+
+If you need to create folders or files, do so following idiomatic Next.js conventions.
+
+---
+
+## 2. Email delivery requirements
+
+I want **two flows**:
+
+### 1. Notification email to me (internal)
+- Triggered when a visitor submits the contact form
+- Sent via Resend **to**: `clenicacare@gmail.com`
+- **From**: `Dave at Clenica Care <dave@clenicacare.com>`
+- `reply_to`: the visitor’s email address
+- Contains all submitted fields in both **plain text** and **HTML** versions
+
+### 2. Optional auto-reply to the visitor (external)
+- Sent to the visitor’s email
+- From: `Dave at Clenica Care <dave@clenicacare.com>`
+- Friendly confirmation that we have received their message and will be in touch
+- Short, clear, professional, and in UK English
+
+Use the **Resend SDK**, not direct `fetch` to their API.
+
+Environment variables (already configured in Vercel and `.env.local`):
+
+- `RESEND_API_KEY`
+- `CONTACT_FORM_TO` = `clenicacare@gmail.com`
+- `CONTACT_FORM_FROM` = `Dave at Clenica Care <dave@clenicacare.com>`
+
+Use these env vars in the code, do **not** hard-code email addresses.
+
+---
+
+## 3. Backend: API route
+
+Create a **Next.js App Router route** at:
+
+- `app/api/contact/route.ts`
+
+### Requirements:
+
+1. Accept only **POST** with `Content-Type: application/json`.
+2. Expected JSON body fields:
+   - `name` (string, required)
+   - `email` (string, required)
+   - `phone` (string, optional)
+   - `subject` (string, optional – default to "New enquiry from Clenica Care website")
+   - `message` (string, required)
+   - `consent` (boolean, required, must be `true`)
+3. Validate input (trim, basic email check, message length > 5).
+4. On success:
+   - Send **notification email** to `CONTACT_FORM_TO`.
+   - Send **auto-reply** to the visitor.
+5. Error handling:
+   - Return 500 on email failure, log server-side only.
+6. Response:
+   - Success: `{ success: true }`
+   - Validation error: `{ error: "..." }`
+7. Security:
+   - Never expose env vars; server-only route.
+
+---
+
+## 4. Frontend: Contact form UI
+
+Create a reusable client component:
+- `components/ContactForm.tsx`
+
+Create the contact page:
+- `app/contact/page.tsx`
+
+### Form fields:
+- Name (required)
+- Email (required)
+- Phone (optional)
+- Subject (optional)
+- Message (required)
+- Consent checkbox (required)
+
+### Form behaviour:
+- Uses React hooks (`useState`).
+- Sends POST to `/api/contact` with JSON payload.
+- Show `loading`, `success`, `error` states.
+- Clean Tailwind styling.
+
+### Page layout:
+- Page title: "Contact Clenica Care"
+- Short introduction paragraph.
+- Centre the form.
+
+---
+
+## 5. Types & structure
+
+- Use **TypeScript** everywhere.
+- Create an interface for the form payload.
+- Strongly type API handler + frontend fetch call.
+
+---
+
+## 6. What I want from you (Codex)
+
+1. Inspect project structure and confirm correct file locations.
+2. Generate or modify the required files to implement everything end-to-end.
+3. Output:
+   - File paths
+   - Full contents of each new/changed file
+4. Provide a brief "How to test" section:
+   - Mention installing `resend`
+   - Confirm required env vars
+   - Instructions to run locally and test submissions
+
+Use UK English throughout and ensure tone is professional and suitable for a care services website.
+
+---
+
+Use this prompt to generate all required code and explanations.
+
+---
+
+# Revised Codex Prompt for New Mail System
+
+You are a senior full-stack engineer. Help me implement a **full contact-form email system** for my website using:
+
+- **Next.js (App Router)**
+- **TypeScript**
+- **Resend** (transactional sending)
+- My new **custom-domain mailbox**: `dave@clenicacare.com` (hosted on Zoho Mail)
+- Deployed on **Vercel**
+
+All content should be in **UK English**.
+
+---
+
+## **1. Email Architecture Requirements**
+
+### **Outbound sender identity**
+All emails sent from the website must use:
+
+```
+Dave at Clenica Care <dave@clenicacare.com>
+```
+
+This email identity is fully verified with my domain host and Resend.
+
+### **Destination mailboxes**
+- **Internal notifications** must go to:  
+  `dave@clenicacare.com`  
+  (This is my real inbox now.)
+
+- **Customer confirmations** must go to the visitor’s own email address.
+
+### **Reply handling**
+All emails sent to customers must include:
+
+```
+reply_to: "Dave at Clenica Care <dave@clenicacare.com>"
+```
+
+So customers’ replies come directly into my new mailbox.
+
+---
+
+## **2. Environment Variables in Vercel**
+
+You must use environment variables, not hard-coded strings:
+
+```
+RESEND_API_KEY
+CONTACT_FORM_FROM="Dave at Clenica Care <dave@clenicacare.com>"
+CONTACT_FORM_TO="dave@clenicacare.com"
+```
+
+Code must reference `process.env.X`, not literals.
+
+---
+
+## **3. Backend Requirements – API Route**
+
+Create:
+
+```
+app/api/contact/route.ts
+```
+
+The API route must:
+
+1. Accept **POST** with JSON.
+2. Validate fields:
+   - name (required)
+   - email (required, must be valid)
+   - phone (optional)
+   - subject (optional, defaults to “New enquiry from Clenica Care website”)
+   - message (required, length > 5)
+   - consent (boolean, must be true)
+3. On success, send **two Resend emails**:
+   - **Internal** → `CONTACT_FORM_TO`  
+     Subject: `New website enquiry from {name}`
+   - **Customer confirmation** → visitor’s email  
+     Subject: `Thank you for contacting Clenica Care`
+
+4. Both emails must include:
+   - A plain-text version  
+   - An HTML version  
+   - Clean, professional formatting  
+   - All submitted fields (for the internal email)
+
+5. Return:
+   - `200 { success: true }` on success  
+   - `400` on validation failure  
+   - `500` on internal/Resend errors
+
+6. Must run **server-only** with no client exposure of env vars.
+
+---
+
+## **4. Frontend Requirements – Contact Form UI**
+
+Create:
+
+```
+components/ContactForm.tsx
+app/contact/page.tsx
+```
+
+### Form fields:
+- Name (required)
+- Email (required)
+- Phone (optional)
+- Subject (optional)
+- Message (required)
+- Checkbox (required):  
+  “I consent to Clenica Care contacting me about this enquiry.”
+
+### Behaviour:
+- Use `"use client"` + React hooks.
+- POST to `/api/contact` as JSON.
+- Show loading/success/error states.
+- Reset form on success.
+- Use simple, clean **Tailwind** styling.
+
+### Page layout:
+- Page heading: “Contact Clenica Care”
+- Short intro paragraph.
+- Centred layout with good spacing.
+
+---
+
+## **5. Types and Structure**
+
+- Use TypeScript types for the request body and API handler.
+- Use a shared interface `ContactFormData`.
+- Ensure strong typing on the frontend `fetch` call and backend validator.
+
+---
+
+## **6. What you should produce (Claude Code)**
+
+You must:
+
+1. Inspect the project structure.
+2. Generate **all files** needed:
+   - API route: full file content
+   - ContactForm component
+   - Contact page
+3. Use correct imports, folder paths, and TypeScript syntax.
+4. Provide a short “How to Test” section:
+   - Installing Resend SDK
+   - Environment variables required
+   - Running locally and sending test messages
+   - Checking inbox at `dave@clenicacare.com`
+
+All email content MUST use professional UK English and be styled appropriately for a care services business.
+
+---
+
+**Use this updated prompt to generate all necessary code and instructions.**
+
