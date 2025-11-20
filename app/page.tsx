@@ -3,7 +3,11 @@ import Link from 'next/link';
 import packageJson from '../package.json';
 
 export default function HomePage() {
-  const siteVersion = packageJson.version;
+  const commitHash =
+    process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA;
+  const siteVersion = commitHash
+    ? `${packageJson.version} · ${commitHash.slice(0, 7)}`
+    : packageJson.version;
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
