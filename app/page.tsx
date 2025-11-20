@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import packageJson from '../package.json';
 
 export default function HomePage() {
+  const siteVersion = packageJson.version;
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
       <div className="max-w-lg">
@@ -28,7 +31,7 @@ export default function HomePage() {
         >
           Contact ClenicaCare
         </Link>
-        <div className="mt-10 text-xs text-slate-400">v0.1.0</div>
+        <div className="mt-10 text-xs text-slate-400">v{siteVersion}</div>
       </div>
     </main>
   );
