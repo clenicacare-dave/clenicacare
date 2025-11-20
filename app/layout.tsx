@@ -3,7 +3,10 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'ClenicaCare',
-  description: 'ClenicaCare is preparing the next evolution in premium care services.'
+  description: 'ClenicaCare is preparing the next evolution in premium care services.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
