@@ -137,13 +137,13 @@ export function ContactForm() {
         />
       </FormField>
 
-      <label className="flex items-start gap-3 text-sm text-slate-600">
+      <label className="flex items-start gap-3 text-base text-slate-600">
         <input
           type="checkbox"
           name="consent"
           checked={formData.consent}
           onChange={handleChange('consent')}
-          className="mt-1 h-4 w-4 rounded border-slate-300 text-clBlue focus:ring-clBlue"
+          className="mt-1.5 h-5 w-5 rounded border-slate-300 text-[#63b247] focus:ring-[#63b247]"
           required
         />
         <span>
@@ -154,7 +154,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitDisabled}
-        className="w-full rounded-full bg-clBlue px-6 py-3 font-semibold text-white transition hover:bg-clNavy disabled:opacity-60"
+        className={`w-full rounded-full px-6 py-3 font-semibold text-white transition ${formData.consent ? 'bg-[#63b247] hover:bg-[#55973c]' : 'bg-slate-200 text-slate-500 cursor-not-allowed'}`}
       >
         {submitting ? 'Sending…' : 'Send enquiry'}
       </button>
