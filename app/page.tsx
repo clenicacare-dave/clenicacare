@@ -5,16 +5,16 @@ export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
       <div className="max-w-lg">
-        <div className="mx-auto w-80 sm:w-96">
+        <Link href="/" className="mx-auto block w-80 sm:w-96">
           <Image
             src="/images/CC-Mainlogo.png"
             alt="ClenicaCare"
             width={512}
             height={512}
             priority
-            className="h-auto w-full animate-pulse-slow"
+            className="h-auto w-full animate-pulse-slow transition hover:scale-[1.01]"
           />
-        </div>
+        </Link>
         <p className="mt-8 text-2xl font-semibold tracking-wide text-clBlue uppercase">
           Coming Soon
         </p>
